@@ -1,0 +1,91 @@
+<!doctype html>
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="nodeTodo">
+<head>
+        <!-- META -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+        <title>Node/Angular Todo App</title>
+
+        <!-- SCROLLS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+        <!-- load bootstrap -->
+        <style>
+                html {
+                        overflow-y: scroll;
+                }
+
+                body {
+                        padding-top: 50px;
+                }
+
+                #todo-list {
+                        margin-bottom: 30px;
+                }
+
+                #todo-form {
+                        margin-bottom: 50px;
+                }
+        </style>
+
+        <!-- SPELLS -->
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+        <!-- load angular -->
+        <script src="core.js"></script>
+
+</head>
+<!-- SET THE CONTROLLER AND GET ALL TODOS WITH INITIALIZE FUNCTION -->
+
+<body ng-controller="mainController">
+        <div class="container center-block">
+
+                <!-- HEADER AND TODO COUNT -->
+                <div class="jumbotron text-center">
+                        <h1>TODOS:<span class="label label-info">{{ todos.length }}</span></h1>
+                </div>
+
+                <!-- FORM TO CREATE TODOS -->
+                <div id="todo-form" class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text-center">
+                                <form>
+                                        <div class="form-group">
+
+                                                <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+                                                <input id="newTodo" type="text" class="form-control input-lg text-center"
+                                                       placeholder="co jeszcze chcesz zrobić?" ng-model="formData.text">
+                                        </div>
+
+                                        <!-- createToDo() WILL CREATE NEW TODOS -->
+                                        <button type="submit" class="btn btn-primary btn-lg"
+                                                ng-click="createTodo()">Dodaj</button>
+                                </form>
+                        </div>
+                </div>
+                <div id="filters" class="container col-sm-offset-3">
+                        <button class="btn btn-primary btn-sm" ng-click="filterTodos('all')">All</button>
+                        <button class="btn btn-primary btn-sm" ng-click="filterTodos('done')">Done</button>
+                        <button class="btn btn-primary btn-sm" ng-click="filterTodos('active')">Active</button>
+                </div>
+                <!-- TODO LIST -->
+                <div id="todo-list" class="row">
+                        <div class="col-sm-8 col-sm-offset-4">
+
+                                <!-- LOOP OVER THE TODOS IN $scope.todos -->
+                                <div class="checkbox" ng-repeat="todo in todos">
+                                        <div class=>
+                                                <label>
+                                                        <input type="checkbox" ng-click="updateTodo(todo)"ng-model="todo.done">
+                                                        <h3>{{ todo.text }}</h3>
+                                                </label>
+                                                <button class="btn btn-danger btn-sm" ng-click="deleteTodo(todo._id)">DEL</button>
+                                        </div>
+                                        
+                                </div>
+
+                        </div>
+                </div>
+        </div>
+</body>
+
+</html>

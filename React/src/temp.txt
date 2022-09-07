@@ -1,0 +1,80 @@
+ getTodos()
+
+let numOfTodos = filteredTodos.length
+let filteredTodos = filterTodos(todos,selectedFilter)
+
+ let displayedTodos = filteredTodos.map(todo =>(
+    <div class="todo" classDone={todo.done}>
+            <button onClick={handlePatch(!todo.done,todo)} class="toggle" aria-label="Change the state of todo"/>
+        <div>
+            <input aria-label="Edit todo" type="text" value={todo.text} onChange={e => todo.text = e.target.value}/>
+            <button onClick={handlePatch(todo.done,todo)} class="save" aria-label="Save todo" />
+		    </div>
+            <button onClick={handleDelete(todo)} class="delete" aria-label="Delete todo"/>
+    </div>
+  ))
+  const filterButtons = filters.map(filter =>(
+    <button onClick={() => setFilter(filter)}
+    classSelected={selectedFilter === filter}
+    class="filter">{filter}</button>
+  ))
+
+
+  function setFilter(newFilter) {
+    selectedFilter = newFilter
+  }
+
+  function filterTodos(todos, filter) {
+    switch (filter) {
+      case 'all':
+        return todos
+      case 'active':
+        return todos.filter((todo) => !todo.done)
+      case 'done':
+        return todos.filter((todo) => todo.done)
+	  default:
+		  return todos
+    }
+  }
+
+  function getTodos(){
+    axios
+        .get(
+      'http://localhost:4000/api/todos'
+        )
+        .then(response => {
+          todos = response.data;
+        });
+    }
+    function handlePost(){
+      axios
+          .post('http://localhost:4000/api/todos',{text: todo})
+          .then(response => {
+            if (response.data) {
+              todos = response.data;
+            }
+          });
+        setTodo("")
+      }
+      function handlePatch(tempDone,todo){
+        axios
+        .patch('http://localhost:4000/api/todos/' + todo._id,{text:todo.text, done:tempDone})
+        .then(response => {
+            if (response.data) {
+                todos = response.data;
+            }
+          });
+      }
+      function handleDelete(todo){
+        axios
+          .delete('http://localhost:4000/api/todos/' + todo._id)
+        .then(response => {
+            if (response.data) {
+                todos = response.data;
+            }
+          });
+      }
+
+      const onKeyPress = e => {
+        if (e.charCode === 13) handlePost();
+      };
